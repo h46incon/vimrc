@@ -21,7 +21,7 @@ filetype on
 " 检测文件类型插件
 filetype plugin on
 "快速保存 
-nmap <leader>w :w!<cr>
+nnoremap <leader>w :w!<cr>
 " 不设定在插入状态无法用退格键和 Delete 键删除回车符
 set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
@@ -52,10 +52,10 @@ set nowrapscan
 set incsearch
 " 搜索时高亮显示被找到的文本
 set hlsearch
-" 关闭错误声音
+" 关闭错误声音 使用屏闪提示错误
 set noerrorbells
-set novisualbell
-set t_vb=
+set visualbell
+"set t_vb=
 
 "How many tenths of a second to blink
 set mat=2
@@ -110,11 +110,11 @@ endif
 "编辑vim配置文件
 if has("unix")
     set fileformats=unix,dos,mac
-    nmap <leader>ee :tabnew $HOME/.vimrc<cr>
+    nnoremap <leader>ee :tabnew $HOME/.vimrc<cr>
 	let $VIMFILES = $HOME."/.vim"
 else
     set fileformats=dos,unix,mac
-    nmap <leader>ee :tabnew $VIM/_vimrc<cr>
+    nnoremap <leader>ee :tabnew $VIM/_vimrc<cr>
 	let $VIMFILES = $VIM."/vimfiles"
 endif
 
@@ -170,42 +170,56 @@ nnoremap <leader>4 :set filetype=php<cr>
 function! RemapDvorak()
 	"符号位
 	"$&[{}(=*)+]!
-	inoremap ` $
-	inoremap 1 &
-	inoremap 2 [
-	inoremap 3 {
-	inoremap 4 }
-	inoremap 5 (
-	inoremap 6 =
-	inoremap 7 *
-	inoremap 8 )
-	inoremap 9 +
-	inoremap 0 ]
-	inoremap - !
-	inoremap = #
+	noremap! ` $
+	noremap! 1 &
+	noremap! 2 [
+	noremap! 3 {
+	noremap! 4 }
+	noremap! 5 (
+	noremap! 6 =
+	noremap! 7 *
+	noremap! 8 )
+	noremap! 9 +
+	noremap! 0 ]
+	noremap! - !
+	noremap! = #
 	"数字位
 	"~%7531902468`
-	inoremap ~ ~
-	inoremap ! %
-	inoremap @ 7
-	inoremap # 5
-	inoremap $ 3
-	inoremap % 1
-	inoremap ^ 9
-	inoremap & 0
-	inoremap * 2
-	inoremap ( 4
-	inoremap ) 6
-	inoremap _ 8
-	inoremap + `
+	"noremap! ~ ~
+	"noremap! ! %
+	"noremap! @ 7
+	"noremap! # 5
+	"noremap! $ 3
+	"noremap! % 1
+	"noremap! ^ 9
+	"noremap! & 0
+	"noremap! * 2
+	"noremap! ( 4
+	"noremap! ) 6
+	"noremap! _ 8
+	"noremap! + `
+	"默认数字位
+	noremap! ~ ~
+	noremap! ! 1
+	noremap! @ 2
+	noremap! # 3
+	noremap! $ 4
+	noremap! % 5
+	noremap! ^ 6
+	noremap! & 7
+	noremap! * 8
+	noremap! ( 9
+	noremap! ) 0
+	noremap! _ %
+	noremap! + `
 	" p右边两个键
 	" -^ _@
-	inoremap [ -
-	inoremap { _
-	inoremap ] ^
-	inoremap } @
+	noremap! [ -
+	noremap! { _
+	noremap! ] ^
+	noremap! } @
 endfunction
-nmap <leader>dr :call RemapDvorak()<cr>
+nnoremap <leader>dr :call RemapDvorak()<cr>
 "}}}
 "{{{ Folding 折叠
 "折叠相关的快捷键
@@ -309,13 +323,13 @@ if has('gui_running') && has('gui_win32') && has('libcall')
         call libcall(g:MyVimLib, 'EnableTopMost', g:VimTopMost)
     endfunction
     "映射 Alt+Enter 切换全屏vim
-    map <a-enter> <esc>:call ToggleFullScreen()<cr>
+    noremap <a-enter> <esc>:call ToggleFullScreen()<cr>
     "切换Vim是否在最前面显示
-    nmap <s-r> <esc>:call SwitchVimTopMostMode()<cr>
+    nnoremap <s-r> <esc>:call SwitchVimTopMostMode()<cr>
     "增加Vim窗体的不透明度
-    nmap <s-t> <esc>:call SetAlpha(10)<cr>
+    nnoremap <s-t> <esc>:call SetAlpha(10)<cr>
     "增加Vim窗体的透明度
-    nmap <s-y> <esc>:call SetAlpha(-10)<cr>
+    nnoremap <s-y> <esc>:call SetAlpha(-10)<cr>
     "Vim启动的时候自动调用InitVim 以去除Vim的白色边框
     autocmd GUIEnter * call libcallnr(g:MyVimLib, 'InitVim', 0)
     " 默认设置透明
@@ -349,8 +363,8 @@ function! FlushDNS()
 	python import sys
 	exe 'python sys.argv = ["ipconfig /flushdns"]'
 endfunction
-nmap <silent> <Leader>host :tabnew c:\windows\system32\drivers\etc\hosts<CR>
-nmap <silent> <Leader>dns :!ipconfig /flushdns<CR>
+nnoremap <Leader>host :tabnew c:\windows\system32\drivers\etc\hosts<CR>
+nnoremap <Leader>dns :!ipconfig /flushdns<CR>
 "autocmd! bufwritepost hosts call FlushDNS()
 " }}}
 
@@ -504,7 +518,7 @@ Bundle 'IndentAnything'
 	let MRU_File = $VIMFILES."/_vim_mru_files"
 	let MRU_Max_Entries = 500
 	let MRU_Add_Menu = 0
-	nmap <leader>f :MRU<cr>
+	nnoremap <leader>f :MRU<cr>
 	" }}}
 
 	" {{{ majutsushi/tagbar 代码导航
@@ -515,7 +529,7 @@ Bundle 'IndentAnything'
 		let g:tagbar_ctags_bin = $VIMFILES.'/ctags.exe'
 	endif
 	let g:tagbar_autofocus = 1
-	nmap <leader>tl :TagbarToggle<CR>
+	nnoremap <leader>tl :TagbarToggle<CR>
 	" }}}
 
 	" {{{ ZenCoding.vim 很酷的插件，HTML代码生成
@@ -546,7 +560,7 @@ Bundle 'IndentAnything'
 	" {{{ asins/jsbeautify 优化js代码，并不是简单的缩进，而是整个优化
 	"Bundle 'asins/jsbeautify'
 	" 开始优化整个文件
-	"nmap <silent> <leader>js :call g:Jsbeautify()<cr>
+	"nnoremap <silent> <leader>js :call g:Jsbeautify()<cr>
 	" }}}
 
 	" {{{ asins/renamer.vim 文件重命名
@@ -558,9 +572,9 @@ Bundle 'IndentAnything'
 	" {{{ dterei/VimBookmarking 设置标记（标签）
 	Bundle 'dterei/VimBookmarking'
 	" <f9> 设置标记    <f4> 向下跳转标记   <s-f4> 向上跳转标记
-	map <f9>   :ToggleBookmark<cr>
-	map <f4>   :NextBookmark<cr>
-	map <s-f4> :PreviousBookmark<cr>
+	noremap <f9>   :ToggleBookmark<cr>
+	noremap <f4>   :NextBookmark<cr>
+	noremap <s-f4> :PreviousBookmark<cr>
 	"}}}
 	
 	" {{{ ctrlp.vim 文件搜索
@@ -576,7 +590,7 @@ Bundle 'IndentAnything'
 	"let g:ctrlp_clear_cache_on_exit=0
 	let g:ctrlp_cache_dir=$VIMFILES.'/_ctrlp'
 	let g:ctrlp_extensions=['tag', 'buffertag', 'quickfix', 'dir', 'rtscript']
-	nmap <a-p> :CtrlP D:/htdocs/tudou.com/<cr>
+	nnoremap <a-p> :CtrlP D:/htdocs/tudou.com/<cr>
 	"<c-d> 切换完全/只文件名搜索
 	"<c-r> 切换搜索匹配模式：字符串/正则
 	" }}}
@@ -595,12 +609,12 @@ Bundle 'IndentAnything'
 	Bundle 'Mark'
 	" 这样，当我输入“,hl”时，就会把光标下的单词高亮，在此单词上按“,hh”会清除该单词的高亮。如果在高亮单词外输入“,hh”，会清除所有的高亮。
 	" 你也可以使用virsual模式选中一段文本，然后按“,hl”，会高亮你所选中的文本；或者你可以用“,hr”来输入一个正则表达式，这会高亮所有符合这个正则表达式的文本。
-	nmap <silent> <leader>hl <plug>MarkSet
-	vmap <silent> <leader>hl <plug>MarkSet
-	nmap <silent> <leader>hh <plug>MarkClear
-	vmap <silent> <leader>hh <plug>MarkClear
-	nmap <silent> <leader>hr <plug>MarkRegex
-	vmap <silent> <leader>hr <plug>MarkRegex
+	nnoremap <silent> <leader>hl <plug>MarkSet
+	vnoremap <silent> <leader>hl <plug>MarkSet
+	nnoremap <silent> <leader>hh <plug>MarkClear
+	vnoremap <silent> <leader>hh <plug>MarkClear
+	nnoremap <silent> <leader>hr <plug>MarkRegex
+	vnoremap <silent> <leader>hr <plug>MarkRegex
 	" 你可以在高亮文本上使用“,#”或“,*”来上下搜索高亮文本。在使用了“,#”或“,*”后，就可以直接输入“#”或“*”来继续查找该高亮文本，直到你又用“#”或“*”查找了其它文本。
 	" <silent>* 当前MarkWord的下一个     <silent># 当前MarkWord的上一个
 	" <silent>/ 所有MarkWords的下一个    <silent>? 所有MarkWords的上一个
