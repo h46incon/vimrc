@@ -287,7 +287,7 @@ if has('gui_running') && has('gui_win32') && has('libcall')
         call libcall(g:MyVimLib, 'ToggleFullScreen', 27 + 29*256 + 30*256*256)
     endfunction
 
-    let g:VimAlpha = 245
+    let g:VimAlpha = 255
     function! SetAlpha(alpha)
         let g:VimAlpha = g:VimAlpha + a:alpha
         if g:VimAlpha < 180
