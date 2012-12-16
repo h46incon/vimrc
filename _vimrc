@@ -154,11 +154,16 @@ nnoremap <s-j> :tabnext<cr>
 nnoremap <s-k> :tabprev<cr>
 "nnoremap F :tabe %
 
-" 插入模式下上下左右移动光标
-inoremap <a-h> <left>
-inoremap <a-l> <right>
+" 插入模式和命令行模式左右移动光标
+noremap! <a-h> <left>
+noremap! <a-l> <right>
+
+" 插入模式模式上下移动光标
 inoremap <a-j> <c-o>gj
 inoremap <a-k> <c-o>gk
+
+"插入模式和命令行模式快速退格
+noremap! <a-;> <BS>
 
 "一些不错的映射转换语法（如果在一个文件中混合了不同语言时有用）
 nnoremap <leader>1 :set filetype=xhtml<cr>
@@ -166,9 +171,9 @@ nnoremap <leader>2 :set filetype=css<cr>
 nnoremap <leader>3 :set filetype=javascript<cr>
 nnoremap <leader>4 :set filetype=php<cr>
 
-"{{{ 插入模式下Dvorak键位的符号映射
+"{{{ 插入模式和命令行模式下Dvorak键位的符号映射
 function! RemapDvorak()
-	"符号位
+	"{{{普通
 	"$&[{}(=*)+]!
 	noremap! ` $
 	noremap! 1 &
@@ -183,7 +188,8 @@ function! RemapDvorak()
 	noremap! 0 ]
 	noremap! - !
 	noremap! = #
-	"数字位
+	"}}}
+	"上档(不使用）{{{
 	"~%7531902468`
 	"noremap! ~ ~
 	"noremap! ! %
@@ -198,7 +204,8 @@ function! RemapDvorak()
 	"noremap! ) 6
 	"noremap! _ 8
 	"noremap! + `
-	"默认数字位
+	"}}}
+	"上档{{{
 	noremap! ~ ~
 	noremap! ! 1
 	noremap! @ 2
@@ -212,14 +219,59 @@ function! RemapDvorak()
 	noremap! ) 0
 	noremap! _ %
 	noremap! + `
-	" p右边两个键
+	"}}}
+	" p右边两个键{{{
 	" -^ _@
 	noremap! [ -
 	noremap! { _
 	noremap! ] ^
 	noremap! } @
+	"}}}
 endfunction
-nnoremap <leader>dr :call RemapDvorak()<cr>
+nnoremap <leader>kr :call RemapDvorak()<cr>
+"}}}
+"{{{ 插入模式和命令行模式下Dvorak键位的符号映射（默认数字）
+function! RemapDvorakDefaultNum()
+	"{{{普通
+	"$&[{}(=*)+]!
+	noremap! ` $
+	noremap! 1 1
+	noremap! 2 2
+	noremap! 3 3
+	noremap! 4 4
+	noremap! 5 5
+	noremap! 6 6
+	noremap! 7 7
+	noremap! 8 8
+	noremap! 9 9
+	noremap! 0 0
+	noremap! - !
+	noremap! = #
+	"}}}
+	"上档{{{
+	noremap! ~ ~
+	noremap! ! &
+	noremap! @ [
+	noremap! # {
+	noremap! $ }
+	noremap! % (
+	noremap! ^ =
+	noremap! & *
+	noremap! * )
+	noremap! ( +
+	noremap! ) ]
+	noremap! _ %
+	noremap! + `
+	"}}}
+	" p右边两个键{{{
+	" -^ _@
+	noremap! [ -
+	noremap! { _
+	noremap! ] ^
+	noremap! } @
+	"}}}
+endfunction
+nnoremap <leader>kn :call RemapDvorakDefaultNum()<cr>
 "}}}
 "{{{ Folding 折叠
 "折叠相关的快捷键
