@@ -1,9 +1,8 @@
 " {{{
 " DesCRiption: 适合自己使用的vimrc文件，for Linux/Windows, GUI/Console
-" Last Change: 2012-10-24
-" Author:      Asins - asinsimple AT gmail DOT com
+" Author:      h46incon
+" Thanks:      Asins - asinsimple AT gmail DOT com
 "              Get latest vimrc from http://nootn.com/lab/vim
-" Version:     3.0
 "}}}
 
 " 设置leader为,
@@ -72,7 +71,7 @@ set showmatch
 
 " 解决自动换行格式下, 如高度在折行之后超过窗口高度结果这一行看不到的问题
 set display=lastline
-" 设置在状态行显示的信息
+" 设置在状态行显示的信息-
 set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ [%{(&fenc==\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ %c:%l/%L%)
 " 显示Tab符
 set list
@@ -130,10 +129,12 @@ endif
 set termencoding=chinese
 set fileencodings=ucs-bom,utf-8,cp936,cp950,latin1
 set ambiwidth=double
-"set guifont=YaHei\ Mono:h12
-set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
-"set gfw=幼圆:h10.5:cGB2312
-"set gfw=Youyuan:h10.5:cGB2312
+"font test: 1234567890Oo
+set guifont=Lucida\ Sans\ Typewriter\ O:h10:cANSI
+"set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+"set guifont=Monaco:h10:cANSI
+"set linespace=-3  "使用Monaco字体的话行间矩太大，调小之。
+
 set gfw=YaHei\ Mono:h10.5:cGB2312
 " }}}
 
@@ -148,19 +149,22 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 
 " Buffers/Tab操作快捷方式!
-nnoremap <s-h> :bprevious<cr>
-nnoremap <s-l> :bnext<cr>
-nnoremap <s-j> :tabnext<cr>
-nnoremap <s-k> :tabprev<cr>
+"nnoremap <s-h> :bprevious<cr>
+"nnoremap <s-l> :bnext<cr>
+"nnoremap <s-j> :tabnext<cr>
+"nnoremap <s-k> :tabprev<cr>
 "nnoremap F :tabe %
 
 " 插入模式和命令行模式左右移动光标
 noremap! <a-h> <left>
 noremap! <a-l> <right>
 
-" 插入模式模式上下移动光标
+" 插入模式上下移动光标
 inoremap <a-j> <c-o>gj
 inoremap <a-k> <c-o>gk
+" 命令行模式上下选择命令
+cnoremap <a-j> <down>
+cnoremap <a-k> <up>
 
 "插入模式和命令行模式快速退格
 noremap! <a-;> <BS>
@@ -377,11 +381,11 @@ if has('gui_running') && has('gui_win32') && has('libcall')
     "映射 Alt+Enter 切换全屏vim
     noremap <a-enter> <esc>:call ToggleFullScreen()<cr>
     "切换Vim是否在最前面显示
-    nnoremap <s-r> <esc>:call SwitchVimTopMostMode()<cr>
+    nnoremap <leader>sr <esc>:call SwitchVimTopMostMode()<cr>
     "增加Vim窗体的不透明度
-    nnoremap <s-t> <esc>:call SetAlpha(10)<cr>
+    nnoremap <leader>st <esc>:call SetAlpha(10)<cr>
     "增加Vim窗体的透明度
-    nnoremap <s-y> <esc>:call SetAlpha(-10)<cr>
+    nnoremap <leader>sy <esc>:call SetAlpha(-10)<cr>
     "Vim启动的时候自动调用InitVim 以去除Vim的白色边框
     autocmd GUIEnter * call libcallnr(g:MyVimLib, 'InitVim', 0)
     " 默认设置透明
@@ -443,7 +447,9 @@ autocmd filetype php set dictionary+=$VIMFILES/bundle/vim-dict/dict/php.dic
 " }}}
 
 " Color
-Bundle 'asins/molokai'
+Bundle 'h46incon/molokai'
+"Bundle 'molokai'
+Bundle 'Solarized'
 " 设定配色方案
 colorscheme molokai
 
@@ -471,13 +477,6 @@ Bundle 'IndentAnything'
 	" }}}
 
 "Bundle 'jamescarr/snipmate-nodejs'
-
-	" Omnifunc {{{
-	" <c-x>_<c-o> 打开提示
-	"Bundle 'teramako/jscomplete-vim'
-	"autocmd FileType javascript setl omnifunc=jscomplete#CompleteJS
-	"let g:jscomplete_use = ['dom', 'moz', 'es6th']
-	" }}}
 
 "Bundle 'L9'
 
@@ -509,7 +508,6 @@ Bundle 'IndentAnything'
     ",,f  ->  更新当前表格
 	" }}}
 
-
 	" {{{ bufexplorer.vim Buffers切换
 	Bundle 'bufexplorer.zip'
 	" \be 全屏方式查看全部打开的文件列表
@@ -526,6 +524,10 @@ Bundle 'IndentAnything'
 	let g:bufExplorerSplitVertSize = 30 " Split width
 	let g:bufExplorerUseCurrentWindow=1 " 在新窗口中打开
 	autocmd BufWinEnter \[Buf\ List\] setl nonumber
+	" }}}
+
+	" {{{ minibufexplorerpp （不使用）
+	" Bundle 'minibufexplorerpp'
 	" }}}
 
 	" {{{ The-NERD-tree 文件管理器
@@ -678,8 +680,12 @@ Bundle 'IndentAnything'
 	hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
 	"}}}
 
-" {{{ neocomplcache 自动补齐
-Bundle 'neocomplcache'
+" {{{ (!)neocomplcache 自动补齐
+"Bundle 'neocomplcache'
+"}}}
+
+"{{{ (!)clang_complete 基于clang的自动不全
+	"Bundle 'Rip-Rip/clang_complete'
 "}}}
 
 " {{{ UltiSnips 代码段生成
@@ -689,5 +695,13 @@ Bundle 'UltiSnips'
 " {{{ a.vim 在头文件和CPP文件中跳转
 Bundle 'a.vim'
 "}}}
-"
+
+"{{{Powerline 状态栏插件(不使用）
+"Bundle 'Lokaltog/vim-powerline'
+"let g:Powerline_symbols = 'fancy'
+"}}}
+
+"{{{ SearchComplete 在按下/ 或？时使用tab补全
+	Bundle 'SearchComplete'
+"}}}
 " }}}
