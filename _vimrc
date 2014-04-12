@@ -27,7 +27,7 @@ set whichwrap+=<,>,h,l
 " 显示行号
 set number
 " 上下可视行数
-set scrolloff=6
+set scrolloff=3
 " 设定 tab 长度为 4
 set tabstop=4
 " 设置按BackSpace的时候可以一次删除掉4个空格
@@ -40,8 +40,15 @@ set history=1024
 set nocursorline
 " 覆盖文件时不备份
 set nobackup
+" 备份文件的目录
+" set backupdir=$HOME/vim_backup
+" 放置交换文件的目录
+" 需要先建立这个文件夹
+set directory=$HOME/VimSwap
 " 自动切换当前目录为当前文件所在的目录
 set autochdir
+" 支持字母的递增和递减 
+set nf+=alpha
 " 搜索时忽略大小写，但在有一个或以上大写字母时仍大小写敏感
 set ignorecase
 set smartcase
@@ -51,6 +58,8 @@ set nowrapscan
 set incsearch
 " 搜索时高亮显示被找到的文本
 set hlsearch
+" 取消当前的搜索高亮
+nnoremap <silent> <leader>n :nohl<cr>
 " 关闭错误声音 使用屏闪提示错误
 set noerrorbells
 set visualbell
@@ -96,6 +105,8 @@ nnoremap <leader>po "*p
 vnoremap <c-c> "+y
 " 普通模式下 Ctrl+c 复制文件路径
 nnoremap <c-c> :let @+ = expand('%:p')<cr>
+" 普通模式下 Alt+v 粘贴
+nnoremap <a-v> "+p
 
 if has("gui_running")
 	set guioptions-=m " 隐藏菜单栏
@@ -464,7 +475,7 @@ Bundle "lepture/vim-css"
 " Indent
 Bundle 'IndentAnything'
 "Bundle 'Javascript-Indentation'
-"Bundle 'gg/python.vim'
+Bundle 'gg/python.vim'
 
 " Plugin
 	" {{{ svn.vim--McCoy svn操作
@@ -482,12 +493,12 @@ Bundle 'IndentAnything'
 
 "Bundle 'vimux'
 
-	" {{{ asins/template.vim 文件模板
+" {{{ asins/template.vim 文件模板
 	Bundle 'asins/template.vim'
-	let g:template_author = "Asins"
-	" }}}
+	let g:template_author = "h46incon"
+" }}}
 
-	"{{{ tpope/vim-fugitive Git命令集合
+"{{{ tpope/vim-fugitive Git命令集合
 	Bundle 'tpope/vim-fugitive'
 	if executable('git')
 		nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -497,18 +508,18 @@ Bundle 'IndentAnything'
 		nnoremap <silent> <leader>gl :Glog<CR>
 		nnoremap <silent> <leader>gp :Git push<CR>
 	endif
-	"}}}
+"}}}
 
 "Bundle 'FencView.vim'
 "Bundle 'hallettj/jslint.vim'
 
-	" {{{ rst表格支持 需要python支持
+" {{{ rst表格支持 需要python支持
 	Bundle 'yangzetian/RST-Tables'
 	",,c  ->  创建新的rst表格
     ",,f  ->  更新当前表格
-	" }}}
+" }}}
 
-	" {{{ bufexplorer.vim Buffers切换
+" {{{ bufexplorer.vim Buffers切换
 	Bundle 'bufexplorer.zip'
 	" \be 全屏方式查看全部打开的文件列表
 	" \bv 左右方式查看   \bs 上下方式查看
@@ -524,13 +535,13 @@ Bundle 'IndentAnything'
 	let g:bufExplorerSplitVertSize = 30 " Split width
 	let g:bufExplorerUseCurrentWindow=1 " 在新窗口中打开
 	autocmd BufWinEnter \[Buf\ List\] setl nonumber
-	" }}}
+" }}}
 
-	" {{{ minibufexplorerpp （不使用）
+" {{{ (!)minibufexplorerpp 
 	" Bundle 'minibufexplorerpp'
-	" }}}
+" }}}
 
-	" {{{ The-NERD-tree 文件管理器
+" {{{ The-NERD-tree 文件管理器
 	Bundle 'The-NERD-tree'
 	" 让Tree把自己给装饰得多姿多彩漂亮点
 	let NERDChristmasTree=1
@@ -551,9 +562,9 @@ Bundle 'IndentAnything'
 	" 窗口宽度
 	let NERDTreeWinSize=31
 	nnoremap <Leader>tt :NERDTree<CR>
-	"}}}
+"}}}
 
-	" {{{ The-NERD-Commenter 注释代码用的，以下映射已写在插件中
+" {{{ The-NERD-Commenter 注释代码用的，以下映射已写在插件中
 	Bundle 'The-NERD-Commenter'
 	" <leader>ca 在可选的注释方式之间切换，比如C/C++ 的块注释/* */和行注释//
 	" <leader>cc 注释当前行
@@ -561,21 +572,21 @@ Bundle 'IndentAnything'
 	" <leader>cA 在当前行尾添加注释符，并进入Insert模式
 	" <leader>cu 取消注释
 	" <leader>cm 添加块注释
-	" }}}
+" }}}
 
-	" {{{ auto_mkdir 自动创建目录
+" {{{ auto_mkdir 自动创建目录
 	Bundle 'auto_mkdir'
-	" }}}
+" }}}
 
-	" {{{ mru.vim 记录最近打开的文件
+" {{{ mru.vim 记录最近打开的文件
 	Bundle 'mru.vim'
 	let MRU_File = $VIMFILES."/_vim_mru_files"
 	let MRU_Max_Entries = 500
 	let MRU_Add_Menu = 0
 	nnoremap <leader>f :MRU<cr>
-	" }}}
+" }}}
 
-	" {{{ majutsushi/tagbar 代码导航
+" {{{ majutsushi/tagbar 代码导航
 	Bundle 'majutsushi/tagbar'
 	if has("unix")
 		let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
@@ -584,9 +595,9 @@ Bundle 'IndentAnything'
 	endif
 	let g:tagbar_autofocus = 1
 	nnoremap <leader>tl :TagbarToggle<CR>
-	" }}}
+" }}}
 
-	" {{{ ZenCoding.vim 很酷的插件，HTML代码生成
+" {{{ ZenCoding.vim 很酷的插件，HTML代码生成
 	Bundle 'ZenCoding.vim'
 	" 插件最新版：http://github.com/mattn/zencoding-vim
 	" 常用命令可看：http://nootn.com/blog/Tool/23/
@@ -595,43 +606,37 @@ Bundle 'IndentAnything'
 	\    'lang': "zh-cn"
 	\}
 	" <c-y>m  合并多行
-	" }}}
+" }}}
 
-	" {{{ CmdlineComplete 命令行模式下自动补全
+" {{{ CmdlineComplete 命令行模式下自动补全
 	Bundle 'CmdlineComplete'
 	" Ctrl + p 向后切换
 	" Ctrl + n 向前切换
-	" }}}
+" }}}
 
-	" {{{ colorizer 颜色显示插件
+" {{{ colorizer 颜色显示插件
 	Bundle 'colorizer'
 	" <leader>tc 切换高亮
 	" :ColorHighlight  - start/update highlighting
 	" :ColorClear      - clear all highlights
 	" :ColorToggle     - toggle highlights
-	" }}}
+" }}}
 
-	" {{{ asins/jsbeautify 优化js代码，并不是简单的缩进，而是整个优化
-	"Bundle 'asins/jsbeautify'
-	" 开始优化整个文件
-	"nnoremap <silent> <leader>js :call g:Jsbeautify()<cr>
-	" }}}
-
-	" {{{ asins/renamer.vim 文件重命名
+" {{{ asins/renamer.vim 文件重命名
 	Bundle 'asins/renamer.vim'
 	" :Renamer 将当前文件所在文件夹下的内容显示在一个新窗口
 	" :Ren 开始重命名
-	"}}}
+"}}}
 	
-	" {{{ dterei/VimBookmarking 设置标记（标签）
+" {{{ dterei/VimBookmarking 设置标记（标签）
 	Bundle 'dterei/VimBookmarking'
 	" <f9> 设置标记    <f4> 向下跳转标记   <s-f4> 向上跳转标记
 	noremap <f9>   :ToggleBookmark<cr>
 	noremap <f4>   :NextBookmark<cr>
 	noremap <s-f4> :PreviousBookmark<cr>
-	"}}}
+"}}}
 	
-	" {{{ ctrlp.vim 文件搜索
+" {{{ ctrlp.vim 文件搜索
 	Bundle 'ctrlp.vim'
 	"set wildignore+=*/tmp/*,*.so,*.swp,*.zip  " MacOSX/Linux
 	set wildignore+=tmp\*,*.swp,*.zip,*.exe   " Windows
@@ -647,19 +652,15 @@ Bundle 'IndentAnything'
 	nnoremap <a-p> :CtrlP D:/htdocs/tudou.com/<cr>
 	"<c-d> 切换完全/只文件名搜索
 	"<c-r> 切换搜索匹配模式：字符串/正则
-	" }}}
+" }}}
 
-	" {{{ matchit.zip 对%命令进行扩展使得能在嵌套标签和语句之间跳转
+" {{{ matchit.zip 对%命令进行扩展使得能在嵌套标签和语句之间跳转
 	Bundle 'matchit.zip'
 	" % 正向匹配      g% 反向匹配
 	" [% 定位块首     ]% 定位块尾
-	"}}}
+"}}}
 	
-	" {{{ MatchTag HTML标签高亮配对
-	Bundle 'MatchTag'
-	" }}}
-
-	" {{{ Mark 给各种tags标记不同的颜色，便于观看调式的插件。
+" {{{ Mark 给各种tags标记不同的颜色，便于观看调式的插件。
 	Bundle 'Mark'
 	" 这样，当我输入“,hl”时，就会把光标下的单词高亮，在此单词上按“,hh”会清除该单词的高亮。如果在高亮单词外输入“,hh”，会清除所有的高亮。
 	" 你也可以使用virsual模式选中一段文本，然后按“,hl”，会高亮你所选中的文本；或者你可以用“,hr”来输入一个正则表达式，这会高亮所有符合这个正则表达式的文本。
@@ -678,30 +679,52 @@ Bundle 'IndentAnything'
 	hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
 	hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 	hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
-	"}}}
+"}}}
 
 " {{{ (!)neocomplcache 自动补齐
-"Bundle 'neocomplcache'
+	"Bundle 'neocomplcache'
 "}}}
 
 "{{{ (!)clang_complete 基于clang的自动不全
 	"Bundle 'Rip-Rip/clang_complete'
 "}}}
 
-" {{{ UltiSnips 代码段生成
-Bundle 'UltiSnips'
+" {{{ (!)UltiSnips 代码段生成
+	"Bundle 'UltiSnips'
 "}}}
 
-" {{{ a.vim 在头文件和CPP文件中跳转
-Bundle 'a.vim'
-"}}}
-
-"{{{Powerline 状态栏插件(不使用）
-"Bundle 'Lokaltog/vim-powerline'
-"let g:Powerline_symbols = 'fancy'
+"{{{(!)Powerline 状态栏插件"
+	"Bundle 'Lokaltog/vim-powerline'
+	"let g:Powerline_symbols = 'fancy'
 "}}}
 
 "{{{ SearchComplete 在按下/ 或？时使用tab补全
 	Bundle 'SearchComplete'
+"}}}
+
+"{{{ EasyMotion 光标移动增强
+	Bundle 'EasyMotion'
+"}}}
+
+"{{{ 语言相关
+
+	" {{{ a.vim 在头文件和CPP文件中跳转
+		Bundle 'a.vim'
+	"}}}
+
+	" {{{ MatchTag HTML标签高亮配对
+		Bundle 'MatchTag'
+	" }}}
+
+	"{{{
+		
+	"}}}
+
+	" {{{ (!)asins/jsbeautify 优化js代码，并不是简单的缩进，而是整个优化
+		"Bundle 'asins/jsbeautify'
+		" 开始优化整个文件
+		"nnoremap <silent> <leader>js :call g:Jsbeautify()<cr>
+	" }}}
+
 "}}}
 " }}}
